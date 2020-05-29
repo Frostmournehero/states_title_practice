@@ -1,0 +1,7 @@
+[
+	{
+		"COUNTRY":"MX",
+		"COMMODITY":"mango",
+		"VARIABLE_OVERHEAD":"1.24"
+	}
+]

@@ -14,6 +14,7 @@ import json
 import os
 import sys
 import time
+import re
 
 class Fruit():
     """
@@ -55,6 +56,15 @@ class Fruit():
         self.fixed_overhead = fixed_overhead
         self.variable_overhead = variable_overhead
 
+    def __repr__(self):
+        out_string = (
+            f"Fruit: [commodity: {self.commodity}, "
+            f"country: {self.country}, "
+            f"fixed_overhead: {self.fixed_overhead}, "
+            f"variable_overhead: {self.variable_overhead}]"
+        )
+        return out_string
+
 
 def parse_json(file_path: str = None) -> list:
     """
@@ -68,6 +78,9 @@ def parse_json(file_path: str = None) -> list:
 
     Raises
         JSONDecodeError: If there is an issue decoding the JSON
+        FileNotFoundError: If the file path cannot be found
+        KeyError: If Json object is missing data for a required fruit 
+            object attribute
     """
     object_list = []
 
@@ -96,6 +109,67 @@ def parse_json(file_path: str = None) -> list:
         )
         print(error_string)
         sys.exit(1)
+    except FileNotFoundError as error:
+        print(f"Error: Cannot find file name {error.filename}")
+        sys.exit(1)
+    # Catch exception if JSON file is missing a field but formatted 
+    # correctly.
+    except KeyError as error:
+        error_string= (
+            f"Error: Failed to parse the file. "
+            f"JSON file is missing expected field {error}"
+        )
+        print(error_string)
+        sys.exit(1)
+    return object_list
+
+def parse_flat_file(file_path: str = None) -> list:
+    """
+    Parses the data in ./Data/flat_file.txt.
+
+    Args:
+        file_path: Usually defaults to ./Data/flat_file.txt.
+
+    Returns:
+        List: List of Fruit objects
+
+    Raises
+        FileNotFoundError: If the file path cannot be found
+    """
+    object_list = []
+
+    if file_path is None:
+        cwd = os.getcwd()
+        file_path = f"{cwd}/Data/flat_file.txt"
+
+    try:
+        with open(file_path) as fruit_data:
+            # Parse each line into an entry using regex
+            # Create a fruit object for each entry
+            # MANGO MX 31 1.24
+            # MANGO BR 20 1.42
+            regex_pattern = r"""
+                ^               # match beginning of the string
+                    ([A-Za-z]+) # MANGO ManGO or mango
+                    \s+         # allow for arbitrary space
+                    ([A-Za-z]{2}) # Two chars only MX Mx or mx
+                    \s+         
+                    (\d*\.\d+|\d+) # 31 or 31.0
+                    \s+
+                    (\d*\.\d+|\d+) # 1 or 1.24
+                $               # match end of the string
+            """                 
+            pattern = re.compile(regex_pattern, re.VERBOSE)
+            for line in fruit_data:
+                entry = pattern.match(line)
+                if entry is None:
+                    raise "Error"
+                (commodity, country, fixed_overhead, 
+                 variable_overhead) = entry.groups()
+                
+                fruit = Fruit(commodity, country, float(fixed_overhead),
+                              float(variable_overhead))
+                object_list.append(fruit)
     except FileNotFoundError as error:
         print(f"Error: Cannot find file name {error.filename}")
         sys.exit(1)

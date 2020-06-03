@@ -98,9 +98,9 @@ version python3
 
     source <fruitpal_working_dir>/bin/activate
 
-4. Install click package
+4. Install the proper packages with requirements.txt
 
-    pip install click
+    pip install -r requirements.txt
 
 USAGE:
 ------

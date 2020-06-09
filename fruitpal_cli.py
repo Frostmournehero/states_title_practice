@@ -45,7 +45,7 @@ def cost(file_path: str, commodity: str, price_per_ton: float,
     
         commodity <string> : the type of fruit being traded
     
-        price_per_ton <float> : the cost per ton of the fruit
+        price_per_ton <float> : the cost per ton of the fruit in USD
     
         trade_volume <float> : the total volume of fruit in tons
     
@@ -83,7 +83,8 @@ def cost(file_path: str, commodity: str, price_per_ton: float,
             total_cost = (trade_volume 
                           * (price_per_ton + fruit.variable_overhead)
                           + fruit.fixed_overhead)
-            cost_dict["TOTAL_COST"] = total_cost
+            # Round to the nearest cent
+            cost_dict["TOTAL_COST"] = round(total_cost, 2)
             output.append(cost_dict)
 
     # Check if the output list is empty. If so return that the fruit

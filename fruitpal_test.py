@@ -25,8 +25,8 @@ class TestFruitpal(unittest.TestCase):
         None
 
     Methods:
-        test_cli_negative_input
-        test_cli_missing_fruit
+        test_cli_cost_negative_input
+        test_cli_cost_missing_fruit
         test_parse_bad_entry
         test_parse_missing_field
         test_parse_good_entry
@@ -39,7 +39,7 @@ class TestFruitpal(unittest.TestCase):
     """
 
     # Bad CLI Input
-    def test_cli_negative_input(self) -> None:
+    def test_cli_cost_negative_input(self) -> None:
         """
         Test negative price_per_ton and trade volume values in 
         fruitpal cli.
@@ -47,8 +47,16 @@ class TestFruitpal(unittest.TestCase):
         # Run the cli script in isolation and capture the output
         # Test negative price_per_ton
         runner = CliRunner()
+        command = "cost"
+        # Special char is needed for negative input. It indicates
+        # everything after it is a command rather than option
+        special_char = "--"
+        commodity = "mango"
+        price_per_ton = "-5.0"
+        trade_volume = "50.0"
         result = runner.invoke(fruit_pal, 
-                               ["cost","--", "mango", "-5.0", "50.0"])
+                               [command, special_char, commodity, 
+                                price_per_ton, trade_volume])
         error_string = (
             "Error: trade_volume and price_per_ton arguments must be "
             "greater than or equal to zero."
@@ -57,23 +65,29 @@ class TestFruitpal(unittest.TestCase):
         self.assertEqual(result.exit_code,1)
 
         # Test the negative trade_volume
+        price_per_ton = "5.0"
+        trade_volume = "-50.0"
         result = runner.invoke(fruit_pal, 
-                               ["cost","--", "mango", "5.0", "-50.0"])
-        error_string = (
-            "Error: trade_volume and price_per_ton arguments must be "
-            "greater than or equal to zero."
-        )
+                               [command, special_char, commodity, 
+                                price_per_ton, trade_volume])
+
         self.assertIn(error_string,result.output)
         self.assertEqual(result.exit_code,1)
 
-    def test_cli_missing_fruit(self) -> None:
+    def test_cli_cost_missing_fruit(self) -> None:
         """
         Test the cli when the chosen fruit is not in the JSON file.
         """
         # Run the cli script in isolation and capture the output
         runner = CliRunner()
+        command = "cost"
+        commodity = "apple"
+        price_per_ton = "5.0"
+        trade_volume = "50.0"
         result = runner.invoke(fruit_pal, 
-                               ["cost", "apple", "5.0", "50.0"])
+                               [command, commodity, 
+                                price_per_ton, trade_volume])
+
         error_string = (
             f"Commodity apple was not found. "
             "Please run fruitpal_cli.py list commodity for valid values"
@@ -101,7 +115,13 @@ class TestFruitpal(unittest.TestCase):
     # Test good JSON
     def test_parse_good_entry(self) -> None:
         """Test a good single entry JSON file"""
-        test_fruit = ("mango", "MX", 32, 1.24)
+        commodity = "mango"
+        country_code = "MX"
+        fixed_overhead = 32
+        variable_overhead = 1.24
+        test_fruit = (
+            commodity, country_code, fixed_overhead, variable_overhead
+        )
         cwd = os.getcwd()
         path = f"{cwd}/Data/test_single_entry.txt"
         parsed_fruit = parse_json(path)[0]
@@ -117,8 +137,13 @@ class TestFruitpal(unittest.TestCase):
         """
         # Run the cli script in isolation and capture the output
         runner = CliRunner()
+        command = "cost"
+        commodity = "mango"
+        price_per_ton = "53"
+        trade_volume = "405"
         result = runner.invoke(fruit_pal, 
-                               ["cost", "mango", "53", "405"])
+                               [command, commodity, 
+                                price_per_ton, trade_volume])
         out_string = (
             "BR   22060.10 | ((53.00 +  1.42) * 405.00) + 20.00\n"
             "MX   21999.20 | ((53.00 +  1.24) * 405.00) + 32.00\n"
@@ -135,8 +160,14 @@ class TestFruitpal(unittest.TestCase):
         cwd = os.getcwd()
         runner = CliRunner()
         file_path = f"--file_path={cwd}/Data/test_extended.txt"
+        command = "cost"
+        commodity = "mango"
+        price_per_ton = "53"
+        trade_volume = "405"
         result = runner.invoke(fruit_pal, 
-                               ["cost", file_path, "mango", "53", "405"])
+                               [command, file_path, commodity, 
+                                price_per_ton, trade_volume])
+
         out_string = (
             "FR   22382.20 | ((53.00 +  2.24) * 405.00) + 10.00\n"
             "US   22223.75 | ((53.00 +  1.75) * 405.00) + 50.00\n"
@@ -157,8 +188,10 @@ class TestFruitpal(unittest.TestCase):
         runner = CliRunner()
         cwd = os.getcwd()
         file_path = f"--file_path={cwd}/Data/test_extended.txt"
+        command = "show"
+        key = "commodity"
         result = runner.invoke(fruit_pal, 
-                               ["show", "commodity", file_path])
+                               [command, key, file_path])
                                
         error_string = (
             "COMMODITY:\n"
@@ -179,8 +212,10 @@ class TestFruitpal(unittest.TestCase):
         runner = CliRunner()
         cwd = os.getcwd()
         file_path = f"--file_path={cwd}/Data/test_extended.txt"
+        command = "show"
+        key = "country"
         result = runner.invoke(fruit_pal, 
-                               ["show", "country", file_path])
+                               [command, key, file_path])
                                
         error_string = (
             "COUNTRY:\n"
@@ -202,8 +237,10 @@ class TestFruitpal(unittest.TestCase):
         runner = CliRunner()
         cwd = os.getcwd()
         file_path = f"--file_path={cwd}/Data/test_extended.txt"
+        command = "show"
+        key = "commodty"
         result = runner.invoke(fruit_pal, 
-                               ["show", "commodty", file_path])
+                               [command, key, file_path])
                                
         error_string = (
             "Error: List of the value commodty is not available.\n"

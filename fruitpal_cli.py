@@ -13,7 +13,7 @@ Functions:
 import click
 import sys
 
-from fruitpal_parse import parse_json
+from fruitpal_parse import parse_file
 
 @click.group(no_args_is_help=True)
 def fruit_pal() -> None:
@@ -72,7 +72,7 @@ def cost(file_path: str, commodity: str, price_per_ton: float,
 
     # Parse the JSON file and get back a list of objects
     commodity = commodity.lower()
-    fruit_list = parse_json(file_path)
+    fruit_list = parse_file(file_path)
 
     # Iterate through the list of objects and create a list of dicts
     # with the object as a key and the total price as the value.
@@ -150,7 +150,7 @@ def show(file_path: str, key: str) -> None:
     
     # Parse the JSON file and get back a list of objects.
     output = set()
-    fruit_list = parse_json(file_path)
+    fruit_list = parse_file(file_path)
 
     # Iterate through the list of objects and create a list of
     # commodities or countries.

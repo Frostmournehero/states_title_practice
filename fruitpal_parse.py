@@ -19,7 +19,7 @@ import re
 class Fruit():
     """
     Class to represent a single data entry from the the parsed
-    JSON data in ./Data/fruit_data.txt
+    JSON data in ./Data/fruit_data.json
 
     Attributes:
         commodity: The type of fruit
@@ -65,13 +65,44 @@ class Fruit():
         )
         return out_string
 
+class ParseFile():
+    def __init__(self, file_path: str) -> None:
+        self.file_path = file_path
+        self.output = None
 
-def parse_json(file_path: str = None) -> list:
+    def parse(self):
+        pass
+
+class ParseJson(ParseFile):
+
+    def parse(self):
+        self.output = parse_json(self.file_path)
+
+class ParseTxt(ParseFile):
+
+    def parse(self):
+        self.output = parse_txt(self.file_path)
+
+parser_list = {
+    '.txt': ParseTxt,
+    '.json': ParseJson,
+}
+
+def parse_file(file_path: str = None) -> list:
+    if file_path is None:
+        cwd = os.getcwd()
+        file_path = f"{cwd}/Data/fruit_data.json"
+    _, file_extension = os.path.splitext(file_path)
+    parser = parser_list[file_extension](file_path)
+    parser.parse() 
+    return parser.output
+
+def parse_json(file_path: str) -> list:
     """
-    Parses the JSON in ./Data/fruit_data.txt.
+    Parses the JSON in ./Data/fruit_data.json.
 
     Args:
-        file_path: Usually defaults to ./Data/fruit_data.txt.
+        file_path: Usually defaults to ./Data/fruit_data.json.
 
     Returns:
         List: List of Fruit objects
@@ -83,10 +114,6 @@ def parse_json(file_path: str = None) -> list:
             object attribute
     """
     object_list = []
-
-    if file_path is None:
-        cwd = os.getcwd()
-        file_path = f"{cwd}/Data/fruit_data.txt"
         
     try:
         with open(file_path) as fruit_data:
@@ -123,7 +150,7 @@ def parse_json(file_path: str = None) -> list:
         sys.exit(1)
     return object_list
 
-def parse_flat_file(file_path: str = None) -> list:
+def parse_txt(file_path: str) -> list:
     """
     Parses the data in ./Data/flat_file.txt.
 
@@ -137,10 +164,6 @@ def parse_flat_file(file_path: str = None) -> list:
         FileNotFoundError: If the file path cannot be found
     """
     object_list = []
-
-    if file_path is None:
-        cwd = os.getcwd()
-        file_path = f"{cwd}/Data/flat_file.txt"
 
     try:
         with open(file_path) as fruit_data:
@@ -166,8 +189,8 @@ def parse_flat_file(file_path: str = None) -> list:
                     raise "Error"
                 (commodity, country, fixed_overhead, 
                  variable_overhead) = entry.groups()
-                
-                fruit = Fruit(commodity, country, float(fixed_overhead),
+
+                fruit = Fruit(commodity.lower(), country, float(fixed_overhead),
                               float(variable_overhead))
                 object_list.append(fruit)
     except FileNotFoundError as error:

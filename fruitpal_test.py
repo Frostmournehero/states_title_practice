@@ -99,7 +99,7 @@ class TestFruitpal(unittest.TestCase):
     def test_parse_bad_entry(self) -> None:
         """Test a bad JSON file"""
         cwd = os.getcwd()
-        path = f"{cwd}/Data/test_bad_format.txt"
+        path = f"{cwd}/Data/test_bad_format.json"
         with self.assertRaises(SystemExit) as catch:
             parse_json(path)
         self.assertEqual(catch.exception.code, 1)
@@ -107,7 +107,7 @@ class TestFruitpal(unittest.TestCase):
     def test_parse_missing_field(self) -> None:
         """Test JSON file with missing field"""
         cwd = os.getcwd()
-        path = f"{cwd}/Data/test_missing_field.txt"
+        path = f"{cwd}/Data/test_missing_field.json"
         with self.assertRaises(SystemExit) as catch:
             parse_json(path)
         self.assertEqual(catch.exception.code, 1)
@@ -123,7 +123,7 @@ class TestFruitpal(unittest.TestCase):
             commodity, country_code, fixed_overhead, variable_overhead
         )
         cwd = os.getcwd()
-        path = f"{cwd}/Data/test_single_entry.txt"
+        path = f"{cwd}/Data/test_single_entry.json"
         parsed_fruit = parse_json(path)[0]
         self.assertEqual(parsed_fruit.commodity, test_fruit[0])
         self.assertEqual(parsed_fruit.country, test_fruit[1])
@@ -159,7 +159,7 @@ class TestFruitpal(unittest.TestCase):
         # Run the cli script in isolation and capture the output
         cwd = os.getcwd()
         runner = CliRunner()
-        file_path = f"--file_path={cwd}/Data/test_extended.txt"
+        file_path = f"--file_path={cwd}/Data/test_extended.json"
         command = "cost"
         commodity = "mango"
         price_per_ton = "53"
@@ -187,7 +187,7 @@ class TestFruitpal(unittest.TestCase):
         # Run the cli script in isolation and capture the output
         runner = CliRunner()
         cwd = os.getcwd()
-        file_path = f"--file_path={cwd}/Data/test_extended.txt"
+        file_path = f"--file_path={cwd}/Data/test_extended.json"
         command = "show"
         key = "commodity"
         result = runner.invoke(fruit_pal, 
@@ -211,7 +211,7 @@ class TestFruitpal(unittest.TestCase):
         # Run the cli script in isolation and capture the output
         runner = CliRunner()
         cwd = os.getcwd()
-        file_path = f"--file_path={cwd}/Data/test_extended.txt"
+        file_path = f"--file_path={cwd}/Data/test_extended.json"
         command = "show"
         key = "country"
         result = runner.invoke(fruit_pal, 
@@ -236,7 +236,7 @@ class TestFruitpal(unittest.TestCase):
         # Run the cli script in isolation and capture the output
         runner = CliRunner()
         cwd = os.getcwd()
-        file_path = f"--file_path={cwd}/Data/test_extended.txt"
+        file_path = f"--file_path={cwd}/Data/test_extended.json"
         command = "show"
         key = "commodty"
         result = runner.invoke(fruit_pal, 

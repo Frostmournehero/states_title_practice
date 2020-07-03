@@ -1,11 +1,11 @@
 """ 
-This module houses the code for fruit pal CLI. It receives the
+This module houses the code for fruit vendor CLI. It receives the
 parsed JSON data from the fruitpal json parser in the form of
 an object list. It uses that list to display the total cost
 and list the countries and commodities
 
 Functions:
-    fruit_pal()
+    fruit_vendor()
     cost()
     show()
 """
@@ -13,10 +13,10 @@ Functions:
 import click
 import sys
 
-from fruitpal_parse import parse_file
+from fruitvendor_parse import parse_file
 
 @click.group(no_args_is_help=True)
-def fruit_pal() -> None:
+def fruit_vendor() -> None:
     """
     A CLI tool for determining the price of fruit trades based on the 
     country.
@@ -24,7 +24,7 @@ def fruit_pal() -> None:
     pass
 
 
-@fruit_pal.command(no_args_is_help=True)
+@fruit_vendor.command(no_args_is_help=True)
 @click.option("--file_path", type=click.STRING,
               help="Fully qualified path for the JSON data file")
 @click.argument("commodity", required=True, type=click.STRING)
@@ -106,6 +106,7 @@ def cost(file_path: str, commodity: str, price_per_ton: float,
     for object_cost_dict in output:
         fruit = object_cost_dict["OBJECT"]
         total_cost = object_cost_dict["TOTAL_COST"]
+        
 
         out_string = (
             f"{fruit.country:3} {total_cost:9.2f} | "
@@ -115,7 +116,7 @@ def cost(file_path: str, commodity: str, price_per_ton: float,
         print(out_string)       
     return
 
-@fruit_pal.command(no_args_is_help=True)
+@fruit_vendor.command(no_args_is_help=True)
 @click.option("--file_path", type=str,
               help="Fully qualified path for the JSON data file")
 @click.argument("key", required=True, type=str)
@@ -162,6 +163,26 @@ def show(file_path: str, key: str) -> None:
     print(*sorted(output), sep="\n")
     return
 
+@fruit_vendor.command()
+@click.option("--file_path", type=str,
+              help="Fully qualified path for the JSON data file")
+@click.option("--commodity", is_flag=True,
+              help="Commodity")
+@click.option("--country", is_flag=True,
+              help="Country Code")
+def options(file_path, commodity, country):
+
+    if file_path:
+        print(file_path)
+    else:
+        print("Using default file path")
+
+    if commodity:
+        print("commodity flag set")
+    if country:
+        print("country flag set")
+    return
+
 if __name__ == '__main__':
-    fruit_pal()
+    fruit_vendor()
 

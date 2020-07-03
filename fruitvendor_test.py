@@ -1,9 +1,9 @@
 """ 
-This module houses the code for testing the fruitpal cli and JSON
+This module houses the code for testing the fruitvendor cli and JSON
 parsing. This code is run separately from the cli.
 
 Classes:
-    TestFruitpal
+    TestFruitVendor
 
 """
 import sys
@@ -11,11 +11,11 @@ import os
 import unittest
 from click.testing import CliRunner
 
-from fruitpal_cli import fruit_pal
-from fruitpal_parse import parse_json, Fruit
+from fruitvendor_cli import fruit_vendor
+from fruitvendor_parse import parse_json, Fruit
 
 
-class TestFruitpal(unittest.TestCase):
+class TestFruitVendor(unittest.TestCase):
     """
     Custom test class that takes from the unittest.TestCase.
     The methods below are each separate tests that are run by unittest
@@ -42,7 +42,7 @@ class TestFruitpal(unittest.TestCase):
     def test_cli_cost_negative_input(self) -> None:
         """
         Test negative price_per_ton and trade volume values in 
-        fruitpal cli.
+        fruitvendor cli.
         """
         # Run the cli script in isolation and capture the output
         # Test negative price_per_ton
@@ -54,7 +54,7 @@ class TestFruitpal(unittest.TestCase):
         commodity = "mango"
         price_per_ton = "-5.0"
         trade_volume = "50.0"
-        result = runner.invoke(fruit_pal, 
+        result = runner.invoke(fruit_vendor, 
                                [command, special_char, commodity, 
                                 price_per_ton, trade_volume])
         error_string = (
@@ -67,7 +67,7 @@ class TestFruitpal(unittest.TestCase):
         # Test the negative trade_volume
         price_per_ton = "5.0"
         trade_volume = "-50.0"
-        result = runner.invoke(fruit_pal, 
+        result = runner.invoke(fruit_vendor, 
                                [command, special_char, commodity, 
                                 price_per_ton, trade_volume])
 
@@ -84,13 +84,13 @@ class TestFruitpal(unittest.TestCase):
         commodity = "apple"
         price_per_ton = "5.0"
         trade_volume = "50.0"
-        result = runner.invoke(fruit_pal, 
+        result = runner.invoke(fruit_vendor, 
                                [command, commodity, 
                                 price_per_ton, trade_volume])
 
         error_string = (
             f"Commodity apple was not found. "
-            "Please run fruitpal_cli.py list commodity for valid values"
+            "Please run fruitvendor_cli.py list commodity for valid values"
         )
         self.assertIn(error_string,result.output)
         self.assertEqual(result.exit_code,1)
@@ -133,7 +133,7 @@ class TestFruitpal(unittest.TestCase):
     # Test good JSON file and CLI
     def test_given_example(self) -> None:
         """
-        Test the given example for Fruitpal (mango, 53, 405)
+        Test the given example for Fruitvendor (mango, 53, 405)
         """
         # Run the cli script in isolation and capture the output
         runner = CliRunner()
@@ -141,7 +141,7 @@ class TestFruitpal(unittest.TestCase):
         commodity = "mango"
         price_per_ton = "53"
         trade_volume = "405"
-        result = runner.invoke(fruit_pal, 
+        result = runner.invoke(fruit_vendor, 
                                [command, commodity, 
                                 price_per_ton, trade_volume])
         out_string = (
@@ -154,7 +154,7 @@ class TestFruitpal(unittest.TestCase):
 
     def test_extended_example(self) -> None:
         """
-        Test extended example for Fruitpal (mango, 53, 405)
+        Test extended example for Fruitvendor (mango, 53, 405)
         """
         # Run the cli script in isolation and capture the output
         cwd = os.getcwd()
@@ -164,7 +164,7 @@ class TestFruitpal(unittest.TestCase):
         commodity = "mango"
         price_per_ton = "53"
         trade_volume = "405"
-        result = runner.invoke(fruit_pal, 
+        result = runner.invoke(fruit_vendor, 
                                [command, file_path, commodity, 
                                 price_per_ton, trade_volume])
 
@@ -190,7 +190,7 @@ class TestFruitpal(unittest.TestCase):
         file_path = f"--file_path={cwd}/Data/test_extended.json"
         command = "show"
         key = "commodity"
-        result = runner.invoke(fruit_pal, 
+        result = runner.invoke(fruit_vendor, 
                                [command, key, file_path])
                                
         error_string = (
@@ -214,7 +214,7 @@ class TestFruitpal(unittest.TestCase):
         file_path = f"--file_path={cwd}/Data/test_extended.json"
         command = "show"
         key = "country"
-        result = runner.invoke(fruit_pal, 
+        result = runner.invoke(fruit_vendor, 
                                [command, key, file_path])
                                
         error_string = (
@@ -239,7 +239,7 @@ class TestFruitpal(unittest.TestCase):
         file_path = f"--file_path={cwd}/Data/test_extended.json"
         command = "show"
         key = "commodty"
-        result = runner.invoke(fruit_pal, 
+        result = runner.invoke(fruit_vendor, 
                                [command, key, file_path])
                                
         error_string = (
@@ -263,7 +263,7 @@ def run_test() -> None:
         print(error_string)
         sys.exit(1)
 
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestFruitpal)
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestFruitVendor)
     unittest.TextTestRunner(verbosity=2).run(suite)
 
 if __name__ == '__main__':

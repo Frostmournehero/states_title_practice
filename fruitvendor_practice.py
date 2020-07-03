@@ -1,6 +1,6 @@
-#fruitpal_practice.py
+#fruitvendor_practice.py
 
-from fruitpal_parse import parse_file
+from fruitvendor_parse import parse_file
 
 file_path = "Data/flat_file.txt"
 print(parse_file(file_path))

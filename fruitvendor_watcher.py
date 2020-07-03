@@ -18,7 +18,7 @@ FRUIT_DICT = {}
 def getJson()->dict:
     cwd = os.getcwd()
 
-    fruit_pal_dict = { "COUNTRIES": set(), "FRUITS": set() }
+    fruit_vendor_dict = { "COUNTRIES": set(), "FRUITS": set() }
 
 
     with open(cwd+"/Data/fruit_data.txt") as fruit_data:
@@ -28,11 +28,11 @@ def getJson()->dict:
             fruit = entry["COMMODITY"]
             for k,v in entry.items():
                 if k not in ["COUNTRY","COMMODITY"]:
-                    fruit_pal_dict.setdefault(fruit, {}).setdefault(country,{})[k] = v
+                    fruit_vendor_dict.setdefault(fruit, {}).setdefault(country,{})[k] = v
 
-            fruit_pal_dict["COUNTRIES"].add(country)
-            fruit_pal_dict["FRUITS"].add(fruit)
-    return fruit_pal_dict
+            fruit_vendor_dict["COUNTRIES"].add(country)
+            fruit_vendor_dict["FRUITS"].add(fruit)
+    return fruit_vendor_dict
 
 
 

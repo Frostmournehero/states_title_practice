@@ -13,11 +13,12 @@ FILES:
 fruit_vendor_cli.py
 fruit_vendor_parse.py
 fruit_vendor_test.py
-Data/fruit_data.txt
-Data/test_bad_format.txt
-Data/test_extended.txt
-Data/test_missing_field.txt
-Data/test_single_entry.txt
+Data/fruit_data.json
+Data/test_bad_format.json
+Data/test_extended.json
+Data/test_missing_field.json
+Data/test_single_entry.json
+requirements.txt
 
 DESCRIPTION:
 ------------
@@ -150,3 +151,14 @@ function above to give context for what each argument type should be.
 The output for test has some stdout from the tests in it. I struggled to 
 rectify it but was unable. Upon expansion that is something that I would
 fix, but for the time being it is still readable and makes sense.
+
+
+ADDITIONS:
+----------
+
+As part of expanding this project I have explored/planned for these items:
+
+    - the watcher package to keep tabs on the json file as it changes. 
+    - addition of a flat file as an alternative information source
+    - updating the parsing moudule to handle both a flat file and json file
+    - planned to add a redis database

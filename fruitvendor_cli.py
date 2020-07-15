@@ -1,6 +1,6 @@
 """ 
 This module houses the code for fruit vendor CLI. It receives the
-parsed JSON data from the fruitpal json parser in the form of
+parsed JSON data from the fruit_vendor json parser in the form of
 an object list. It uses that list to display the total cost
 and list the countries and commodities
 
@@ -13,7 +13,7 @@ Functions:
 import click
 import sys
 
-from fruitvendor_parse import parse_file
+from fruit_vendor_parse import parse_file
 
 @click.group(no_args_is_help=True)
 def fruit_vendor() -> None:
@@ -92,7 +92,7 @@ def cost(file_path: str, commodity: str, price_per_ton: float,
     if not output:
         error_string = (
             f"Commodity {commodity} was not found. "
-            "Please run fruitpal_cli.py list commodity for valid values"
+            "Please run fruit_vendor_cli.py list commodity for valid values"
         )
         print(error_string)
         sys.exit(1)

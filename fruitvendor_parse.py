@@ -1,7 +1,7 @@
 """ 
 This module houses the code for parsing the JSON data and
 the class object used to store to the JSON data. A list of
-these objects is then sent to the fruitpal cli.
+these objects is then sent to the fruit_vendor cli.
 
 Classes:
     Fruit

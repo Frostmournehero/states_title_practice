@@ -1,10 +1,10 @@
-#fruitpal file watchdog and JSON translator
+#fruit_vendor file watchdog and JSON translator
 
 """
-This file runs in the baxkground once started and waits for the JSON text
+This file runs in the background once started and waits for the JSON text
 file to change. Once it has detected a change it parses the JSON and 
 translates it into a python dict that is available for import by the 
-fruitpal_cli file.
+fruit_vendor_cli file. Not implemented yet.
 """
 import json
 from watchdog.observers import Observer  
@@ -73,7 +73,7 @@ class MyWatcher(PatternMatchingEventHandler):
         Override method of PatternMatchingEventHandler that is called when a
         file is modified
         """
-        print("fruitpal data has been modified")
+        print("fruit_vendor data has been modified")
         self.parse_json_on_event(event)
         print(FRUIT_DICT)
 

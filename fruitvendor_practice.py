@@ -1,6 +1,6 @@
-#fruitvendor_practice.py
+#fruit_vendor_practice.py
 
-from fruitvendor_parse import parse_file
+from fruit_vendor_parse import parse_file
 
 file_path = "Data/flat_file.txt"
 print(parse_file(file_path))

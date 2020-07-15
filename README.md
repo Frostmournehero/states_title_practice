@@ -1,8 +1,8 @@
-# Fruitpal States Title Take-home Project
+# Fruit_vendor Project
 
 NAME:
 -----
-Fruitpal
+Fruit_vendor
 
 AUTHOR:
 -------
@@ -10,9 +10,9 @@ Andrew Lamson
 
 FILES:
 ------
-fruitpal_cli.py
-fruitpal_parse.py
-fruitpal_test.py
+fruit_vendor_cli.py
+fruit_vendor_parse.py
+fruit_vendor_test.py
 Data/fruit_data.txt
 Data/test_bad_format.txt
 Data/test_extended.txt
@@ -21,13 +21,13 @@ Data/test_single_entry.txt
 
 DESCRIPTION:
 ------------
-Fruitpal is a click-based CLI that returns cost information about 
+fruit_vendor is a click-based CLI that returns cost information about 
 trading fruits with different countries. The fruit, cost per ton, and 
 trade volume in tons are specified by the user, while the country and 
 commodity specific prices are provided by the third party JSON file. 
 
-The fruitpal_cli.py file is the CLI and should be used to run the CLI.
-The fruitpal_test.py file is the testing for the CLI and JSON parsing 
+The fruit_vendor_cli.py file is the CLI and should be used to run the CLI.
+The fruit_vendor_test.py file is the testing for the CLI and JSON parsing 
 and can be run independently of the CLI.
 
 DESIGN CONSIDERATIONS/ ASSUMPTIONS:
@@ -39,9 +39,9 @@ goal. For this reason I chose the click package to create the CLI
 interface as it makes changing the arguments, options, and formatting 
 for the CLI interface much simpler than a traditional argparse CLI. In 
 order to use that flexibility I changed the input from:
-    python fruitpal_cli.py mango 53 405
+    python fruit_vendor_cli.py mango 53 405
     to:
-    python fruitpal_cli.py cost mango 53 405
+    python fruit_vendor_cli.py cost mango 53 405
 The addition of the cost allows for other commands to be added, such 
 as a show action that might list all the valid commodities or 
 countries. I actually built out a show command that is used referenced 
@@ -86,17 +86,17 @@ SETUP:
 This guide assumes that the environment is installed with a recent 
 version python3
 
-1. Untar the fruitpal tar ball in the desired directory
+1. Untar the fruit_vendor tar ball in the desired directory
 
-    tar -xvf andrew_lamson_fruitpal.tar
+    tar -xvf andrew_lamson_fruit_vendor.tar
 
-2. Setup a virtual environment in the working directory for fruitpal
+2. Setup a virtual environment in the working directory for fruit_vendor
 
-    python -m venv <fruitpal_working_dir>
+    python -m venv <fruit_vendor_working_dir>
 
 3. Activate the virtual env
 
-    source <fruitpal_working_dir>/bin/activate
+    source <fruit_vendor_working_dir>/bin/activate
 
 4. Install the proper packages with requirements.txt
 
@@ -107,26 +107,26 @@ USAGE:
 
 1. Help
 
-    python fruitpal_cli.py --help
+    python fruit_vendor_cli.py --help
 
-    python fruitpal_cli.py <COMMAND> --help
+    python fruit_vendor_cli.py <COMMAND> --help
 
-2. Running the fruitpal example
+2. Running the fruit_vendor example
 
-    python fruitpal_cli.py cost mango 53 405
+    python fruit_vendor_cli.py cost mango 53 405
 
-3. Running extended fruitpal example
+3. Running extended fruit_vendor example
 
-    python fruitpal_cli.py cost mango 53 405
-        --file_path=<fruitpal_working_dir>/Data/test_extended.txt
+    python fruit_vendor_cli.py cost mango 53 405
+        --file_path=<fruit_vendor_working_dir>/Data/test_extended.txt
 
 4. Running the show command
 
-    python fruitpal_cli.py show commodity
+    python fruit_vendor_cli.py show commodity
 
-5. Testing fruitpal
+5. Testing fruit_vendor
 
-    python fruitpal_test.py
+    python fruit_vendor_test.py
 
 
 NOTES:
@@ -139,12 +139,12 @@ following that -- is an argument value.
 
 For example:
 
-python fruitpal_cli.py cost 
+python fruit_vendor_cli.py cost 
     --file_path=./Data/fruit_data.txt -- mango -5 50
 
-There is a slight difference between the Docstrings of fruitpal_cli and 
-everything else. The cli requires more spacing since it is parsed and 
-sent to stdout for help. Whereas parse and test are not and have the
+There is a slight difference between the Docstrings of fruit_vendor_cli
+and everything else. The cli requires more spacing since it is parsed
+and sent to stdout for help. Whereas parse and test are not and have the
 function above to give context for what each argument type should be.
 
 The output for test has some stdout from the tests in it. I struggled to 

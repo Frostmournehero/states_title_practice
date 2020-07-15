@@ -1,5 +1,5 @@
 """ 
-This module houses the code for testing the fruitvendor cli and JSON
+This module houses the code for testing the fruit_vendor cli and JSON
 parsing. This code is run separately from the cli.
 
 Classes:
@@ -11,8 +11,8 @@ import os
 import unittest
 from click.testing import CliRunner
 
-from fruitvendor_cli import fruit_vendor
-from fruitvendor_parse import parse_json, Fruit
+from fruit_vendor_cli import fruit_vendor
+from fruit_vendor_parse import parse_json, Fruit
 
 
 class TestFruitVendor(unittest.TestCase):
@@ -42,7 +42,7 @@ class TestFruitVendor(unittest.TestCase):
     def test_cli_cost_negative_input(self) -> None:
         """
         Test negative price_per_ton and trade volume values in 
-        fruitvendor cli.
+        fruit_vendor cli.
         """
         # Run the cli script in isolation and capture the output
         # Test negative price_per_ton
@@ -90,7 +90,7 @@ class TestFruitVendor(unittest.TestCase):
 
         error_string = (
             f"Commodity apple was not found. "
-            "Please run fruitvendor_cli.py list commodity for valid values"
+            "Please run fruit_vendor_cli.py list commodity for valid values"
         )
         self.assertIn(error_string,result.output)
         self.assertEqual(result.exit_code,1)
@@ -133,7 +133,7 @@ class TestFruitVendor(unittest.TestCase):
     # Test good JSON file and CLI
     def test_given_example(self) -> None:
         """
-        Test the given example for Fruitvendor (mango, 53, 405)
+        Test the given example for fruit_vendor (mango, 53, 405)
         """
         # Run the cli script in isolation and capture the output
         runner = CliRunner()
@@ -154,7 +154,7 @@ class TestFruitVendor(unittest.TestCase):
 
     def test_extended_example(self) -> None:
         """
-        Test extended example for Fruitvendor (mango, 53, 405)
+        Test extended example for fruit_vendor (mango, 53, 405)
         """
         # Run the cli script in isolation and capture the output
         cwd = os.getcwd()
